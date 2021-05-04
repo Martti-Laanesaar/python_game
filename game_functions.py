@@ -67,7 +67,7 @@ def get_number_aliens_x(game_settings, alien_width):
 
 def get_number_rows(game_settings, ship_height, alien_height):
     """Define nuber of rows on screen"""
-    available_space_y = game_settings.screen_height - 3 * alien_height - ship_height
+    available_space_y = game_settings.screen_height - 2 * alien_height - ship_height
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
 
@@ -102,7 +102,10 @@ def change_fleet_direction(game_settings, aliens):
         alien.rect.y += game_settings.fleet_drop_speed
     game_settings.fleet_direction *= -1
 
-def update_aliens(game_settings, aliens):
+def update_aliens(game_settings, ship, aliens):
     """Update aliens position"""
     check_fleet_edges(game_settings, aliens)
     aliens.update()
+    # Check collisions between ship and alien
+    if pygame.sprite.spritecollideany(ship, aliens):
+        print("Ship hit")

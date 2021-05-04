@@ -2,6 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 from alien import Alien
+from time import sleep
 
 def check_keydown_events(event, game_settings, screen, ship, bullets):
     """Check key down events"""
@@ -46,7 +47,7 @@ def update_screen(game_settings, screen, ship, aliens, bullets):
     # display the last screen
     pygame.display.flip()
 
-def update_bullets(aliens, bullets):
+def update_bullets(game_settings, aliens, ship, bullets):
     """Update bullets position and remove old bullets"""
     bullets.update()
     for bullet in bullets.copy():
@@ -102,10 +103,35 @@ def change_fleet_direction(game_settings, aliens):
         alien.rect.y += game_settings.fleet_drop_speed
     game_settings.fleet_direction *= -1
 
-def update_aliens(game_settings, ship, aliens):
+def update_aliens(game_settings, stats, screen, ship, aliens, bullets):
     """Update aliens position"""
     check_fleet_edges(game_settings, aliens)
     aliens.update()
     # Check collisions between ship and alien
     if pygame.sprite.spritecollideany(ship, aliens):
-        print("Ship hit")
+        ship_hit(game_settings, stats, screen, aliens, bullets)
+    # check aliens appear screen bottom
+    check_aliens_bottom(game_settings, stats, screen, ship, aliens, bullets)
+
+def ship_hit(game_settings, stats, screen, ship, aliens, bullets):
+    if stats.ships_left > 0:
+        # ships left minus one
+        stats.ships_left = stats.ships_left - 1
+        # aliens and bullets groups are empty
+        aliens.empty()
+        bullets.empty()
+        # create new aliens fleet
+        create_fleet(game_settings, screen, ship, aliens)
+        # center ship
+        ship.ship_center()
+        # pause
+        sleep(2)
+    else:
+        stats.game_active = False
+
+def check_aliens_bottom(game_settings, stats, screen, ship, aliens, bullets):
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(game_settings, stats, screen, ship, aliens, bullets)
+            break

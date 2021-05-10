@@ -48,7 +48,7 @@ def check_play_button(game_settings, screen, stats, play_button, ship, aliens, b
         create_fleet(game_settings, screen, ship, aliens)
         ship.ship_center()
 
-def update_screen(game_settings, screen, ship, aliens, bullets):
+def update_screen(game_settings, stats, sb, screen, ship, aliens, bullets, play_button):
     """Update image on screen and draw new screen"""
     # add screen background
     screen.fill(game_settings.bg_color)
@@ -58,6 +58,11 @@ def update_screen(game_settings, screen, ship, aliens, bullets):
     ship.blitme()
     # add alien to screen
     aliens.draw(screen)
+    # show scoreboard
+    sb.draw_score()
+    # diisplay play button
+    if not stats.game.active:
+        play_button.draw_button()
     # display the last screen
     pygame.display.flip()
 

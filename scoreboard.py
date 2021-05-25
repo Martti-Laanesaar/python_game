@@ -13,12 +13,12 @@ class Scoreboard():
         self.prepare_score()
 
     def prepare_score(self):
-            """Convert score to grafics component"""
-            score_str = str(self.stats.score)
-            self.score_image = pygame.font.render(score_str, True, self.text_color, self.game_settings.bg_color)
-            self.score_image_rect = self.score_image.get_rect()
-            self.score_image_rect.right = self.screen_rect.right - 20
-            self.score_image_rect.top = 20
+        """Convert score to grafics component"""
+        score_str = str(self.stats.score)
+        self.score_image = self.font.render(score_str, True, self.text_color, self.game_settings.bg_color)
+        self.score_image_rect = self.score_image.get_rect()
+        self.score_image_rect.right = self.screen_rect.right - 20
+        self.score_image_rect.top = 20
 
     def draw_score(self):
         self.screen.blit(self.score_image, self.score_image_rect)

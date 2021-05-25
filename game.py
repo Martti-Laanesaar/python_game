@@ -17,6 +17,8 @@ def run_game():
     game_settings = Settings()
     screen = pygame.display.set_mode((game_settings.screen_width, game_settings.screen_height))
     pygame.display.set_caption("Example Game")
+    # button to start the game
+    play_button = Button(game_settings, screen, "PLAY")
     # game statistics object
     stats = GameStats(game_settings)
     # gane scoreboard
@@ -30,11 +32,10 @@ def run_game():
     gf.create_fleet(game_settings, screen, ship, aliens)
 
     while True:
-        gf.check_events(game_settings, screen, stats, play_button, ship, bullets)
+        gf.check_events(game_settings, screen, stats, play_button, ship, aliens, bullets)
         if stats.game_active:
             ship.update()
-            gf.update_bullets(game_settings, screen,stats, sb, ship, aliens, bullets)
+            gf.update_bullets(game_settings, screen, stats, sb, ship, aliens, bullets)
             gf.update_aliens(game_settings, stats, screen, ship, aliens, bullets)
-        gf.update_screen(game_settings, screen, stats, sb, ship, aliens, bullets)
-# test game
+        gf.update_screen(game_settings, screen, stats, sb, ship, aliens, bullets, play_button)
 run_game()

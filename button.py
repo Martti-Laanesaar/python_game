@@ -18,7 +18,7 @@ class Button():
 
     def prepare_msg(self, msg):
         """Convert text message to grafics and center with button"""
-        self.msg_image = pygame.font.render(msg, True, self.text_color, self.button_color)
+        self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.rect.center
 
